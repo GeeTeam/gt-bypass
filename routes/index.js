@@ -1,13 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var svgCaptcha = require('svg-captcha');
-var axios = require("axios");
 var GEETEST_SESSION = "geeSession";
-
 var modearr = ['geetest', 'char', 'empty']; // 预设的验证形式
 var activeMode = 'geetest';// geetest/char/empty
-var useHeartbeats = true; // 自动心跳检测开关
-var GEEAPI = ""
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,16 +26,6 @@ router.get('/changeMode', function(req, res, next) {
     })
 });
 
-
-// 极验接口心跳检测,每次来到注册流程进行检测,可以手动关闭关闭
-function heartbeats(){
-  if(!useHeartbeats){
-    return;
-  }
-  axios.get(GEEAPI).then(function (res) {
-
-  })
-}
 
 
 router.get('/getMode',function (req,res) {
