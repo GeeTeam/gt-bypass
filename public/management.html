@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./libs/jquery-v1.11.1.min.js"></script>
+    <style>
+        .container {
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            border: 1px solid #ccc;
+            width: 300px;
+            transform: translate(-50%,-50%);
+            padding: 20px;
+        }
+
+        .container>div {
+            margin-bottom: 20px;
+        }
+
+        .container>button {
+            margin-top: 20px;
+            width: 100px;
+            height: 34px;
+            cursor: pointer;
+        }
+
+        input {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>验证形式管理页面</h3>
+    <div id="activeMode">
+        当前模式为: <span> geetest</span>
+    </div>
+
+    <form>
+        可选模式如下<br>
+        <input type="radio" name="colors" id="geetest">极验
+        <input type="radio" name="colors" id="char">字符
+        <input type="radio" name="colors" id="empty">无验证
+    </form>
+
+    <button id="submit"> 提交</button>
+</div>
+
+
+
+<script>
+
+    function getMode(){
+        $.ajax({
+            url: "getMode?t=" + (new Date()).getTime(), // 加随机数防止缓存
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $("#activeMode>span").html(data.activeMode);
+                var mode = data.activeMode;
+                $(`input:radio[ id =  ${mode} ]`).attr('checked','true');
+            }
+        });
+    }
+    getMode();
+
+    $("#submit").click(function () {
+        var mode = $("input[name='colors']:checked").attr("id");
+        $.ajax({
+            url: `changeMode?user=admin&pass=123&mode=${mode}&t=${new Date()}`, // 加随机数防止缓存
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $("#activeMode>span").html(data.activeMode);
+                alert(data.info)
+            }
+        });
+    })
+
+
+
+
+</script>
+
+</body>
+</html>
